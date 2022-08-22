@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+    <metadata>
+        <id>Microsoft.AI.PromptEngine</id>
+        <version>0.1.0</version>
+        <title>Prompt Engine</title>
+        <authors>Microsoft</authors>
+        <owners>Microsoft</owners>
+        <projectUrl>https://github.com/microsoft/prompt-engine-dotnet</projectUrl>
+        <repository type="git" url="https://github.com/microsoft/prompt-engine-dotnet.git" />
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>Interface to build prompts for large scale language models (LLMs)</summary>
+        <description>This package provides an easy and reusable interface to build prompts for large scale language models (LLMs).
+        </description>
+        <releaseNotes />
+        <tags>Microsoft AI LLM language prompt</tags>
+        <dependencies>
+            <group targetFramework="netcoreapp3.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\**" exclude="**.nupkg" target="lib" />
+    </files>
+</package>
