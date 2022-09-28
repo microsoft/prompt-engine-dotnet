@@ -17,7 +17,7 @@ public class TextAnalysisEngine : GenericEngine
     /// <summary>Constructor</summary>
     /// <param name="text">Content to analyze</param>
     /// <param name="queryBeforeText">Whether to insert the query before the content or after (default)</param>
-    public TextAnalysisEngine(string text, bool queryBeforeText = false) : base()
+    public TextAnalysisEngine(string text, bool queryBeforeText = false)
     {
         if (text == null) text = "";
         text = text.Trim();
