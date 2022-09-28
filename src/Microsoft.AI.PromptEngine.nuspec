@@ -16,7 +16,7 @@
         <releaseNotes />
         <tags>Microsoft AI LLM language prompt</tags>
         <dependencies>
-            <group targetFramework="netcoreapp3.1" />
+            <group targetFramework="net6.0" />
         </dependencies>
     </metadata>
     <files>
