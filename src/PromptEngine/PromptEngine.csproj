@@ -1,10 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>Microsoft.AI.PromptEngine</AssemblyName>
         <RootNamespace>Microsoft.AI.PromptEngine</RootNamespace>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="YamlDotNet" Version="12.0.1" />
+    </ItemGroup>
 
 </Project>

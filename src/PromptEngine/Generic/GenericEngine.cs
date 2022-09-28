@@ -1,7 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace Microsoft.AI.PromptEngine.Generic;
 
@@ -30,6 +36,20 @@ public class GenericEngine : IPromptEngine
     public GenericEngine(Settings settings)
     {
         this.settings = settings;
+    }
+
+    /// <summary>Instance factory using YAML settings</summary>
+    /// <param name="yamlSettingsFile"></param>
+    /// <returns>Engine instance</returns>
+    public static GenericEngine FromYamlSettings(string yamlSettingsFile)
+    {
+        if (!File.Exists(yamlSettingsFile)) throw new Exception($"YAML configuration not found: {yamlSettingsFile}");
+
+        var yamlDeserializer = new DeserializerBuilder()
+            .WithNamingConvention(PascalCaseNamingConvention.Instance)
+            .Build();
+        Settings settings = yamlDeserializer.Deserialize<Settings>(File.ReadAllText(yamlSettingsFile));
+        return new GenericEngine(settings);
     }
 
     /// <summary>Generate a prompt using the settings provided input</summary>
@@ -77,6 +97,8 @@ public class GenericEngine : IPromptEngine
     {
         if (interactions == null || interactions.Length == 0) return;
 
+        var jsonOutput = (string.Compare(this.settings.OutputFormat, "json", StringComparison.InvariantCultureIgnoreCase) == 0);
+
         foreach (var example in interactions)
         {
             if (!string.IsNullOrEmpty(example.Input))
@@ -89,14 +111,34 @@ public class GenericEngine : IPromptEngine
                 if (!string.IsNullOrEmpty(this.settings.InputPostfix))
                     builder.Append(this.settings.InputPostfix);
 
-                if (!string.IsNullOrEmpty(example.Output))
+                if (!string.IsNullOrEmpty(example.Output) || example.OutputValues != null)
                 {
                     builder.Append(this.settings.InputOutputSeparator);
 
                     if (!string.IsNullOrEmpty(this.settings.OutputPrefix))
                         builder.Append(this.settings.OutputPrefix);
 
-                    builder.Append(example.Output);
+                    if (!string.IsNullOrEmpty(example.Output))
+                    {
+                        builder.Append(jsonOutput ? JsonConvert.SerializeObject(example.Output) : example.Output);
+                    }
+                    else if (example.OutputValues != null)
+                    {
+                        if (jsonOutput)
+                        {
+                            builder.Append(JsonConvert.SerializeObject(example.OutputValues));
+                        }
+                        else
+                        {
+                            foreach (KeyValuePair<string, string> values in example.OutputValues)
+                            {
+                                builder.Append(values.Key);
+                                builder.Append(this.settings.MultipleTextKeyValueSeparator);
+                                builder.Append(values.Value);
+                                builder.Append(this.settings.MultipleTextValuesSeparator);
+                            }
+                        }
+                    }
 
                     if (!string.IsNullOrEmpty(this.settings.OutputPostfix))
                         builder.Append(this.settings.OutputPostfix);

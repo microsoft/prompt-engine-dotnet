@@ -20,7 +20,7 @@ public class Settings
     // When the engine description is not empty, this text is added at the end
     // e.g. to close a code comment, e.g. '*/'
     public string DescriptionPostfix { get; set; }
-        
+
     // The character used to separate descriptions, examples, etc.
     public string TextBlocksSeparator { get; set; } = "\n\n";
 
@@ -28,24 +28,33 @@ public class Settings
     // interactions. This might be a User name for a chat, a comment start operator
     // such as '/*' in case of code generation, etc.
     public string InputPrefix { get; set; }
-        
+
     // Optional text automatically inserted after the input, both examples and user
     // interactions. This might be a comment close operator such '*/' in case of code
     // generation, etc.
     public string InputPostfix { get; set; }
-        
+
     // Optional text automatically inserted before the output, both examples and user
     // interactions. This might be a Bot name for a chat where we define the bot response,
     // etc.
     public string OutputPrefix { get; set; }
-        
+
     // Optional text automatically inserted after the output, both examples and user
     // interactions. This might be a '.' (dot) to end sentences, etc.
     public string OutputPostfix { get; set; }
-        
+
+    // Optional format, supported values are "text" and "json".
+    public string OutputFormat { get; set; } = "text";
+
     // What character to use to separate input from output.
     public string InputOutputSeparator { get; set; } = "\n";
-        
+
+    // What character to use to separate the name of multiple output values (only for text format).
+    public string MultipleTextKeyValueSeparator { get; set; } = ": ";
+
+    // What character to use to separate multiple output values (only for text format).
+    public string MultipleTextValuesSeparator { get; set; } = "\n";
+
     // Input+Output examples, telling the AI model what kind of output we expect
     // to be generated. If the list is too long and exceeds the model max tokens,
     // some examples are automatically excluded. The logic used to exclude exceeding
